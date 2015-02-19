@@ -13,9 +13,10 @@ public class Model {
         }
         return instance;
     }
+    
+    // this is a comment whats the story
 
     private List<Programmer> programmers;
-
     private Model() {
 
         this.programmers = new ArrayList<Programmer>();
@@ -24,7 +25,7 @@ public class Model {
                 new Programmer(
                         "Joe Bloggs", "joe@bloggs.com", "087-6543210",
                         1234, "Java C++ C#", 70000.00));
-
+       
         this.programmers.add(
                 new Programmer(
                         "Anne Bloggs", "anne@bloggs.com", "087-7654321",
