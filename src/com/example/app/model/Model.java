@@ -27,15 +27,12 @@ public class Model {
         try {
             Connection conn = DBConnection.getInstance();
             this.propertyGateway = new PropertyTableGateway(conn);
-            //this.managerGateway = new ManagerTableGateway(conn);
+            //this.OwnerGateway = new OwnerTableGateway(conn);
 
             this.properties = this.propertyGateway.getProperties();
             //this.managers = this.managerGateway.getManagers();
         }
-        catch (ClassNotFoundException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (SQLException ex) {
+        catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

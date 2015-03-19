@@ -3,33 +3,28 @@ package com.example.app.model;
 public class Owner {
 
     private int id;
-    private String fName;
-    private String lName;
+    private String name;
     private String email;
     private int number;
 
-    public Owner(int id, String fn,String ln, String e, int nm) {
+    public Owner(int id, String n, String e, int nm) {
         this.id = id;
-        this.fName = fn;
-        this.lName = ln;
+        this.name = n;
+     
         this.email = e;
         this.number = nm;
     }
 
-    public Owner(String fn,String ln, String e, int nm) {
-        this(-1,fn,ln,e,nm);
+    public Owner(String n, String e, int nm) {
+        this(-1,n,e,nm);
     }
 
     public int getId() {
         return id;
     }
 
-    public String getFname() {
-        return fName;
-    }
-
-    public String getLname() {
-        return lName;
+    public String getName() {
+        return name;
     }
 
     public String getEmail() {
@@ -43,13 +38,10 @@ public class Owner {
         this.id = id;
     }
 
-    public void setFname(String fName) {
-        this.fName = fName;
+    public void setName(String name) {
+        this.name = name;
     }
-    public String setLname() {
-        return lName;
-    }
-
+ 
     public void setEmail(String email) {
         this.email = email;
     }

@@ -1,6 +1,5 @@
 package com.example.app.model;
 
-import com.example.app.model.Property;
 import java.util.List;
 import java.util.Scanner;
 
@@ -69,7 +68,7 @@ public class DemoApp {
     }*/
 
     private static void deleteProperty(Scanner keyboard, Model model) {
-        System.out.print("Enter the staff number of the property to delete:");
+        System.out.print("Enter the Property ID of the property to delete:");
         int ID = Integer.parseInt(keyboard.nextLine());
         Property p;
 
@@ -89,7 +88,7 @@ public class DemoApp {
 
 
     private static void editProperty(Scanner kb, Model m) {
-        System.out.print("Enter the staff number of the property to edit:");
+        System.out.print("Enter the Property ID of the property to edit:");
         int id = Integer.parseInt(kb.nextLine());
         Property p;
 
