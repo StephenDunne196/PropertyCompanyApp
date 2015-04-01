@@ -13,12 +13,12 @@ public class PropertyTableGateway {
     private Connection mConnection;
 
     private static final String TABLE_NAME = "property";
-    private static final String COLUMN_ID = "id";
-    private static final String COLUMN_NAME = "name";
-    private static final String COLUMN_ADDRESS = "address";
+    private static final String COLUMN_ID = "PropertyID";
+    private static final String COLUMN_NAME = "Name";
+    private static final String COLUMN_ADDRESS = "Address";
     private static final String COLUMN_DESCRIPTION = "description";
-    private static final String COLUMN_RENT = "rent";
-    private static final String COLUMN_BEDROOMS = "bedrooms";
+    private static final String COLUMN_RENT = "Rent";
+    private static final String COLUMN_BEDROOMS = "Bedrooms";
   
 
     public PropertyTableGateway(Connection connection) {
@@ -147,7 +147,7 @@ public class PropertyTableGateway {
         stmt.setString(3, p.getDescription());
         stmt.setDouble(4, p.getRent());
         stmt.setInt(5, p.getBedrooms());
-        stmt.setInt(6, p.getId());
+        stmt.setInt(6, p.getPropertyID());
 
         // execute the query
         numRowsAffected = stmt.executeUpdate();

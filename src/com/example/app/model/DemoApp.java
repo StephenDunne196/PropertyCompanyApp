@@ -26,14 +26,7 @@ public class DemoApp {
             switch (opt) {
                 case 1: {
                     System.out.println("Creating property");
-                    p = readProperty(keyboard);
-                    if(model.addProperty(p)){
-                        System.out.println("Property added to database");
-                    }
-                    else{
-                        System.out.println("property not added to database");
-                    }
-                    System.out.println();
+                    createProperty(keyboard, model);
                     break;
                 }
                 case 2: {
@@ -52,20 +45,18 @@ public class DemoApp {
                     break;
                 }
             }
-        }
-        while (opt != 5);
+        } while (opt != 5);
     }
 
-/*    private static void createProperties(Scanner keyb, Model mdl) {
+    private static void createProperty(Scanner keyb, Model mdl) {
         Property p = readProperty(keyb);
         if (mdl.addProperties(p)) {
             System.out.println("Property added to database.");
-        }
-        else {
+        } else {
             System.out.println("Property not added to database.");
         }
         System.out.println();
-    }*/
+    }
 
     private static void deleteProperty(Scanner keyboard, Model model) {
         System.out.print("Enter the Property ID of the property to delete:");
@@ -76,16 +67,13 @@ public class DemoApp {
         if (p != null) {
             if (model.deleteProperty(p)) {
                 System.out.println("Property deleted");
-            }
-            else {
+            } else {
                 System.out.println("Property not deleted");
             }
-        }
-        else {
+        } else {
             System.out.println("Property not found");
         }
     }
-
 
     private static void editProperty(Scanner kb, Model m) {
         System.out.print("Enter the Property ID of the property to edit:");
@@ -97,35 +85,32 @@ public class DemoApp {
             editPropertyDetails(kb, p);
             if (m.updateProperty(p)) {
                 System.out.println("Property updated");
-            }
-            else {
+            } else {
                 System.out.println("Property not updated");
             }
-        }
-        else {
+        } else {
             System.out.println("Property not found");
         }
     }
 
     private static void viewProperty(Model mdl) {
-        List<Property> property = mdl.getProperty();
+        List<Property> property = mdl.getProperties();
         System.out.println();
         if (property.isEmpty()) {
             System.out.println("There are no properties in the database.");
-        }
-        else {
-            System.out.printf("%5s %20s %20s %15s %12s %20s %8s %7s\n",
+        } else {
+            System.out.printf("%5s %20s %20s %15s %8s %8s\n",
                     "Id", "name", "address", "description", "rent", "bedrooms");
             for (Property pr : property) {
-                System.out.printf("%5d %20s %20s %15s %12d %20s %.2f %7s\n",
-                        pr.getId(),
+                System.out.printf("%5d %20s %20s %15s %8.2f %8d\n",
+                        pr.getPropertyID(),
                         pr.getName(),
                         pr.getAddress(),
                         pr.getDescription(),
                         pr.getRent(),
                         pr.getBedrooms());
-                     
-                 }
+
+            }
         }
         System.out.println();
     }
@@ -134,20 +119,18 @@ public class DemoApp {
         String name, address, description, line;
         int bedrooms;
         double rent;
-      
 
-        name = getString(keyb, "Enter name: ");
-        address = getString(keyb, "Enter email: ");
-        description = getString(keyb, "Enter mobile: ");
-        
+        name = getString(keyb, "Enter Name: ");
+        address = getString(keyb, "Enter Address: ");
+        description = getString(keyb, "Enter description: ");
+
         line = getString(keyb, "Enter rent: ");
         rent = Double.parseDouble(line);
-        line = getString(keyb, "Enter bedrooms: ");      
+        line = getString(keyb, "Enter bedrooms: ");
         bedrooms = Integer.parseInt(line);
-        
 
-        Property p =
-                new Property(name, address, description,
+        Property p
+                = new Property(name, address, description,
                         rent, bedrooms);
 
         return p;
@@ -157,14 +140,12 @@ public class DemoApp {
         String name, address, description, line;
         int bedrooms;
         double rent;
-        
 
-        name = getString(keyb, "Enter name [" +  p.getName() + "]: ");
-        address = getString(keyb, "Enter address [" +  p.getAddress() + "]: ");
-        description = getString(keyb, "Enter Description [" +  p.getDescription() + "]: ");
-        String line1 = getString(keyb, "Enter Rent [" +  p.getRent() + "]: ");
-        String line2 = getString(keyb, "Enter Bedrooms [" +  p.getBedrooms() + "]: ");
-        
+        name = getString(keyb, "Enter name [" + p.getName() + "]: ");
+        address = getString(keyb, "Enter address [" + p.getAddress() + "]: ");
+        description = getString(keyb, "Enter Description [" + p.getDescription() + "]: ");
+        String line1 = getString(keyb, "Enter Rent [" + p.getRent() + "]: ");
+        String line2 = getString(keyb, "Enter Bedrooms [" + p.getBedrooms() + "]: ");
 
         if (name.length() != 0) {
             p.setName(name);
@@ -180,15 +161,14 @@ public class DemoApp {
             p.setRent(rent);
         }
         if (line2.length() != 0) {
-            bedrooms=Integer.parseInt(line2);
+            bedrooms = Integer.parseInt(line2);
             p.setBedrooms(bedrooms);
         }
     }
 
- 
     private static String getString(Scanner keyboard, String prompt) {
-      System.out.print(prompt);
-      return keyboard.nextLine();
+        System.out.print(prompt);
+        return keyboard.nextLine();
     }
 
 }

@@ -64,7 +64,7 @@ public class Model {
         boolean removed = false;
 
         try {
-            removed = this.propertyGateway.deleteProperty(p.getId());
+            removed = this.propertyGateway.deleteProperty(p.getPropertyID());
             if (removed) {
                 removed = this.properties.remove(p);
             }
@@ -106,10 +106,19 @@ public class Model {
         }
         return p;
     }
-    
-    public 
 
-    boolean addProperty(Property p) {
+    /*boolean addProperty(Property p) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    /**
+     *
+     * @param p
+     * @return
+     */
+    /**public 
+
+    //boolean addProperty(Property p) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -119,5 +128,5 @@ public class Model {
 
     List<Property> getProperty() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    }*/
 }

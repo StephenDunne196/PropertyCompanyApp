@@ -24,7 +24,7 @@ public class Property {
         this(-1, n, a, d, r, b);
     }
 
-    public int getId() {
+    public int getPropertyID() {
         return id;
     }
 
@@ -72,8 +72,8 @@ public class Property {
         this.bedrooms = bedrooms;
     }
 
-    int getPropertyID() {
+    /*int getPropertyID() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+*/
 }
