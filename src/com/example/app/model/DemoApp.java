@@ -1,14 +1,22 @@
 package com.example.app.model;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
 public class DemoApp {
+    private static final int NAME_ORDER = 1;
+    
+    private static final int RENT_ORDER = 1;
 
+    
+    
+    
     public static void main(String[] args) {
         Scanner keyboard = new Scanner(System.in);
         Model model;
-        int opt = 9;
+        int opt = 12;
         Property p;
         do {
             try{
@@ -17,17 +25,21 @@ public class DemoApp {
                     System.out.println("2. Delete existing Property");
                     System.out.println("3. Edit existing Property");
                     System.out.println("4. View all Property");
+                    System.out.println("5. View all Properties by Rent");
+                    System.out.println("6. View single Property");
                     System.out.println();
 
-                    System.out.println("5. Create new Owner");
-                    System.out.println("6. Delete existing Owner");
-                    System.out.println("7. Edit existing Owner");
-                    System.out.println("8. View all Owner");
-                    System.out.println("9. Exit");
+                    System.out.println("7. Create new Owner");
+                    System.out.println("8. Delete existing Owner");
+                    System.out.println("9. Edit existing Owner");
+                    System.out.println("10. View all Owner");
+                    System.out.println("11. View Single Owner");
+                     System.out.println();
+                    System.out.println("12. Exit");
                     System.out.println();
 
 
-                    opt = getInt(keyboard,"Enter option: ",9);
+                    opt = getInt(keyboard,"Enter option: ",10);
 
                     System.out.println("You chose option " + opt);
                     switch (opt) {
@@ -48,28 +60,44 @@ public class DemoApp {
                         }
                         case 4: {
                             System.out.println("Viewing property");
-                            viewProperty(model);
+                            viewProperty(model, NAME_ORDER);
+                            break;
+                        }
+                        
+                         case 5: {
+                            System.out.println("Viewing Property By Rent");
+                            viewProperty(model, RENT_ORDER);
+                            break;
+                        }
+                        case 6: {
+                            System.out.println("Viewing single property");
+                            viewPropertySingle(keyboard, model);
                             break;
                         }
 
-                         case 5: {
+                         case 7: {
                             System.out.println("Creating owner");
                             createOwner(keyboard, model);
                             break;
                         }
-                        case 6: {
+                        case 8: {
                             System.out.println("Deleting owner");
                             deleteOwner(keyboard, model);
                             break;
                         }
-                        case 7: {
+                        case 9: {
                             System.out.println("Editing owner");
                             editOwner(keyboard, model);
                             break;
                         }
-                        case 8: {
+                        case 10: {
                             System.out.println("Viewing owner");
                             viewOwner(model);
+                            break;
+                        }
+                         case 11: {
+                            System.out.println("Viewing Single owner");
+                            viewOwnerSingle(keyboard, model);
                             break;
                         }
                     }
@@ -79,7 +107,7 @@ public class DemoApp {
                 System.out.println(e.getMessage());
                 System.out.println();
             }
-        } while (opt != 9);
+    } while (opt != 12);
     }
 
     private static void createProperty(Scanner keyb, Model mdl) throws dataAccessException {
@@ -127,15 +155,32 @@ public class DemoApp {
         }
     }
 
-    private static void viewProperty(Model mdl) {
+    private static void viewProperty(Model mdl, int order) {
         List<Property> property = mdl.getProperties();
         System.out.println();
         if (property.isEmpty()) {
             System.out.println("There are no properties in the database.");
         } else {
-            System.out.printf("%5s %20s %20s %15s %8s %8s  %20s \n",
+            if (order == NAME_ORDER){
+                 Collections.sort(property);
+            }
+            else if (order == RENT_ORDER){
+                Comparator<Property> compar =  new PropertyRentComparator();
+                 Collections.sort(property,compar);
+            }
+                
+            
+         
+          displayProperty(property,mdl);
+        }
+        System.out.println();
+    }
+    
+    private static void displayProperty(List<Property> properties, Model mdl){
+          System.out.printf("%5s %20s %20s %15s %8s %8s  %20s \n",
                     "Id", "name", "address", "description", "rent", "bedrooms", "ownerId");
-            for (Property pr : property) {
+            for (Property pr : properties) {
+                Owner o = mdl.findOwnerById(pr.getOwnerId());
                 System.out.printf("%5d %20s %20s %15s %8.2f %8d %20s\n",
                         pr.getPropertyID(),
                         pr.getName(),
@@ -143,11 +188,37 @@ public class DemoApp {
                         pr.getDescription(),
                         pr.getRent(),
                         pr.getBedrooms(),
-                        pr.getOwnerId());
+                       (o !=null) ? o.getName() : "");
 
             }
+        
+        
+        
+        
+    }
+    private static void viewPropertySingle(Scanner keyboard, Model model) throws dataAccessException {
+        int ID = getInt(keyboard, "Enter the Property ID of the property to delete:",-1);
+        
+        Property p;
+
+        p = model.findPropertyByPropertyID(ID);
+        if (p != null) {
+             Owner o = model.findOwnerById(p.getOwnerId());
+            System.out.println("Name         : " + p.getName());
+            System.out.println();
+            System.out.println("Address      : " + p.getAddress());
+            System.out.println();
+            System.out.println("description  : " + p.getDescription());
+            System.out.println();
+            System.out.println("Rent         : " + p.getRent());
+            System.out.println();
+            System.out.println("Bedrooms     : " + p.getBedrooms());
+            System.out.println();
+            System.out.println("OwnerId      : " + ((o !=null) ? o.getName() : ""));
+            System.out.println();
+        } else {
+            System.out.println("Property not found");
         }
-        System.out.println();
     }
 
     private static Property readProperty(Scanner keyb) {
@@ -155,16 +226,19 @@ public class DemoApp {
         int bedrooms, ownerId;
         double rent;
 
+        
         name = getString(keyb, "Enter Name: ");
+        System.out.println();
         address = getString(keyb, "Enter Address: ");
+        System.out.println();
         description = getString(keyb, "Enter description: ");
-       
+       System.out.println();
         rent = getDouble(keyb, "Enter rent: ", 0);
-        
+        System.out.println();
         bedrooms = getInt(keyb, "Enter bedrooms: ", 0);
-        
+        System.out.println();
         ownerId = getInt(keyb, "Enter Owner id (enter -1 for no owner): ", -1);
-
+        System.out.println();
         Property p
                 = new Property(name, address, description,
                         rent, bedrooms,ownerId);
@@ -234,7 +308,7 @@ public class DemoApp {
         }
     }
 
-    private static void editOwner(Scanner kb, Model m) {
+    private static void editOwner(Scanner kb, Model m) throws dataAccessException {
         int id = getInt(kb,"Enter the Owner ID of the owner to edit:",-1);
         Owner o;
 
@@ -261,6 +335,7 @@ public class DemoApp {
                     "Id", "name", "Email", "Number \n");
             for (Owner o : owner) {
                 System.out.printf("%5d %20s %20s %15s ",
+                        
                         o.getOwnerId(),
                         o.getName(),
                         o.getEmail(),
@@ -270,6 +345,46 @@ public class DemoApp {
                         }
         }
         System.out.println();
+    }
+    private static void viewOwnerSingle(Scanner keyboard, Model model){
+        int id = getInt(keyboard,"Enter the Owner ID of the owner to View:",-1);
+        
+        Owner o;
+
+        o = model.findOwnerById(id);
+        System.out.println();
+        if (o != null) {
+            System.out.println("Name         : " + o.getName());
+            System.out.println();
+            
+            System.out.println("Email        : " + o.getEmail());
+            System.out.println();
+            
+            System.out.println("Number       : " + o.getNumber());
+            System.out.println();
+        
+        
+            List<Property> propertyList = model.getPropertiesByOwnerId(o.getOwnerId());
+            if(propertyList.isEmpty()){
+                System.out.println();
+                System.out.println("This Owner Owns no properties");
+                System.out.println();
+            }
+            else{
+                System.out.println("This Owner Owns the following properties");
+                System.out.println();
+                displayProperty(propertyList,model);
+            }
+             
+            
+            
+            
+          
+              }
+         else {
+               System.out.println("Owner not found");
+        }
+        
     }
 
     private static Owner readOwner(Scanner keyb) {
