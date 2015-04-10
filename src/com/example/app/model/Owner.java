@@ -2,25 +2,27 @@ package com.example.app.model;
 
 public class Owner {
 
-    private int id;
+    private int ownerId;
     private String name;
     private String email;
-    private int number;
+    private String number;
 
-    public Owner(int id, String n, String e, int nm) {
-        this.id = id;
+    public Owner(int id, String n, String e, String num) {
+        this.ownerId = id;
         this.name = n;
      
         this.email = e;
-        this.number = nm;
+        this.number = num;
     }
 
-    public Owner(String n, String e, int nm) {
-        this(-1,n,e,nm);
+    public Owner(String n, String e, String num) {
+        this(-1,n,e,num);
     }
 
-    public int getId() {
-        return id;
+  
+
+    public int getOwnerId() {
+        return ownerId;
     }
 
     public String getName() {
@@ -30,12 +32,12 @@ public class Owner {
     public String getEmail() {
         return email;
     }
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setOwnerId(int id) {
+        this.ownerId = id;
     }
 
     public void setName(String name) {
@@ -46,7 +48,7 @@ public class Owner {
         this.email = email;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 }

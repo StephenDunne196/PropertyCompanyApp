@@ -10,19 +10,19 @@ import java.util.List;
 
 public class OwnerTableGateway {
 
-    /*private Connection mConnection;
+    private Connection mConnection;
 
-    private static final String TABLE_NAME = "owners";
-    private static final String COLUMN_ID = "id";
+    private static final String TABLE_NAME = "owner";
+    private static final String COLUMN_ID = "ownerId";
     private static final String COLUMN_NAME = "Name";
-    private static final String COLUMN_OFFICE = "Email";
-    private static final String COLUMN_EXTENSION = "Number";
+    private static final String COLUMN_EMAIL = "Email";
+    private static final String COLUMN_NUMBER = "Number";
 
     public OwnerTableGateway(Connection connection) {
         mConnection = connection;
     }
 
-    public int insertOwner(String n, String o, String e) throws SQLException {
+    public int insertOwner(String n, String e, String num) throws SQLException {
         String query;                   // the SQL query to execute
         PreparedStatement stmt;         // the java.sql.PreparedStatement object used to execute the SQL query
         int numRowsAffected;
@@ -31,15 +31,15 @@ public class OwnerTableGateway {
         // the required SQL INSERT statement with place holders for the values to be inserted into the database
         query = "INSERT INTO " + TABLE_NAME + " (" +
                 COLUMN_NAME + ", " +
-                COLUMN_OFFICE + ", " +
-                COLUMN_EXTENSION +
+                COLUMN_EMAIL + ", " +
+                COLUMN_NUMBER +
                 ") VALUES (?, ?, ?)";
 
         // create a PreparedStatement object to execute the query and insert the values into the query
         stmt = mConnection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         stmt.setString(1, n);
-        stmt.setString(2, o);
-        stmt.setString(3, e);
+        stmt.setString(2, e);
+        stmt.setString(3, num);
 
         // execute the query and make sure that one and only one row was inserted into the database
         numRowsAffected = stmt.executeUpdate();
@@ -81,7 +81,7 @@ public class OwnerTableGateway {
         List<Owner> owners;         // the java.util.List containing the Owner objects created for each row
                                         // in the result of the query the id of a owner
 
-        String name, office, extension;
+        String name, email, number;
         int id;
         Owner m;                   // a Owner object created from a row in the result of the query
 
@@ -98,10 +98,10 @@ public class OwnerTableGateway {
         while (rs.next()) {
             id = rs.getInt(COLUMN_ID);
             name = rs.getString(COLUMN_NAME);
-            office = rs.getString(COLUMN_OFFICE);
-            extension = rs.getString(COLUMN_EXTENSION);
+            email = rs.getString(COLUMN_EMAIL);
+            number = rs.getString(COLUMN_NUMBER);
 
-            m = new Owner(id, name, office, extension);
+            m = new Owner(id, name, email, number);
             owners.add(m);
         }
 
@@ -117,22 +117,22 @@ public class OwnerTableGateway {
         // the required SQL INSERT statement with place holders for the values to be inserted into the database
         query = "UPDATE " + TABLE_NAME + " SET " +
                 COLUMN_NAME      + " = ?, " +
-                COLUMN_OFFICE    + " = ?, " +
-                COLUMN_EXTENSION + " = ? " +
+                COLUMN_EMAIL    + " = ?, " +
+                COLUMN_NUMBER + " = ? " +
                 " WHERE " + COLUMN_ID + " = ?";
 
         // create a PreparedStatement object to execute the query and insert the new values into the query
         stmt = mConnection.prepareStatement(query);
         stmt.setString(1, m.getName());
-        stmt.setString(2, m.getOffice());
-        stmt.setString(3, m.getExtension());
-        stmt.setInt(4, m.getId());
+        stmt.setString(2, m.getEmail());
+        stmt.setString(3, m.getNumber());
+        stmt.setInt(4, m.getOwnerId());
 
         // execute the query
         numRowsAffected = stmt.executeUpdate();
 
         // return the true if one and only one row was updated in the database
         return (numRowsAffected == 1);
-    }*/
+    }
 
 }

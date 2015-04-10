@@ -19,13 +19,14 @@ public class PropertyTableGateway {
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_RENT = "Rent";
     private static final String COLUMN_BEDROOMS = "Bedrooms";
+    private static final String COLUMN_OWNERID = "ownerId";
   
 
     public PropertyTableGateway(Connection connection) {
         mConnection = connection;
     }
 
-    public int insertProperty(String n, String a, String d, double r, int b) throws SQLException {
+    public int insertProperty(String n, String a, String d, double r, int b, int oId) throws SQLException {
         String query;                   // the SQL query to execute
         PreparedStatement stmt;         // the java.sql.PreparedStatement object used to execute the SQL query
         int numRowsAffected;
@@ -38,7 +39,8 @@ public class PropertyTableGateway {
                 COLUMN_DESCRIPTION + ", " +
                 COLUMN_RENT + ", " +
                 COLUMN_BEDROOMS + " " +
-                ") VALUES (?, ?, ?, ?, ?)";
+                COLUMN_OWNERID + " " +
+                ") VALUES (?, ?, ?, ?, ?, ?)";
 
         // create a PreparedStatement object to execute the query and insert the values into the query
         stmt = mConnection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -47,7 +49,7 @@ public class PropertyTableGateway {
         stmt.setString(3, d);
         stmt.setDouble(4, r);
         stmt.setInt(5, b);
-    
+        stmt.setInt(6, oId);
 
         // execute the query and make sure that one and only one row was inserted into the database
         numRowsAffected = stmt.executeUpdate();
@@ -58,6 +60,7 @@ public class PropertyTableGateway {
 
             id = keys.getInt(1);
         }
+        
 
         // return the id assigned to the row in the database
         return id;
@@ -90,7 +93,7 @@ public class PropertyTableGateway {
                                         // in the result of the query the id of a programmer
 
         String name, address, description;
-        int id, bedrooms;
+        int id, bedrooms, ownerId;
         double rent;
 
         Property p;                   // a Property object created from a row in the result of the query
@@ -112,12 +115,12 @@ public class PropertyTableGateway {
             description = rs.getString(COLUMN_DESCRIPTION);
             rent = rs.getDouble(COLUMN_RENT);
             bedrooms = rs.getInt(COLUMN_BEDROOMS);
-            
+            ownerId = rs.getInt(COLUMN_OWNERID);
             if (rs.wasNull()) {
             
             }
 
-            p = new Property(id, name, address, description, rent, bedrooms);
+            p = new Property(id, name, address, description, rent, bedrooms, ownerId);
             properties.add(p);
         }
 
@@ -138,6 +141,7 @@ public class PropertyTableGateway {
                 COLUMN_DESCRIPTION + " = ?, " +
                 COLUMN_RENT        + " = ?, " +
                 COLUMN_BEDROOMS    + " = ? " +
+                COLUMN_OWNERID     + " = ? " +
                 " WHERE " + COLUMN_ID + " = ?";
 
         // create a PreparedStatement object to execute the query and insert the new values into the query
@@ -148,7 +152,7 @@ public class PropertyTableGateway {
         stmt.setDouble(4, p.getRent());
         stmt.setInt(5, p.getBedrooms());
         stmt.setInt(6, p.getPropertyID());
-
+        stmt.setInt(7, p.getOwnerId());  
         // execute the query
         numRowsAffected = stmt.executeUpdate();
 

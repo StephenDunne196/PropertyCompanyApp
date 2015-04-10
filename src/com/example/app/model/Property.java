@@ -1,6 +1,6 @@
 package com.example.app.model;
 
-public class Property {
+public class Property implements Comparable<Property> {
 
     private int id;
     private String name;
@@ -8,20 +8,21 @@ public class Property {
     private String description;
     private double rent;
     private int bedrooms;
+    private int ownerId;
     
 
-    public Property(int id, String n, String a, String d, double r, int b){
+    public Property(int id, String n, String a, String d, double r, int b, int oId){
         this.id = id;
         this.name = n;
         this.address = a;
         this.description = d;
         this.rent = r;
         this.bedrooms = b;
-        
+        this.ownerId = oId;
     }
-
-    public Property(String n, String a, String d, double r, int b) {
-        this(-1, n, a, d, r, b);
+    
+    public Property(String n, String a, String d, double r, int b, int oId) {
+        this(-1, n, a, d, r, b,oId);
     }
 
     public int getPropertyID() {
@@ -71,9 +72,24 @@ public class Property {
     public void setBedrooms(int bedrooms) {
         this.bedrooms = bedrooms;
     }
+    public int getOwnerId() {
+      return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+       this.ownerId = ownerId;
+    }
 
     /*int getPropertyID() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 */
+
+    @Override
+    public int compareTo(Property that){
+    String myName = this.getName();
+    String yourName= that.getName();
+    
+    return myName.compareTo(yourName);
+    }
 }
